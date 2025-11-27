@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Sidebar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    
+    .sidebar {
+      background-color: #1f2937; 
+      color: #f9fafb; 
+      width: 250px;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      margin: 12px 0;
+    }
+
+    .sidebar a {
+      color: #f9fafb;
+      text-decoration: none;
+      display: block;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .sidebar a:hover {
+      background-color: #3b82f6; 
+    }
+
+    
+    .content {
+      flex: 1;
+      padding: 20px;
+      background: #f3f4f6;
+    }
+
+    
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        text-align: center;
+      }
+      .sidebar ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .sidebar li {
+        margin: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Sidebar</h2>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <h1>Welcome to My Page</h1>
+    <p>This is the main content area. Resize the browser window to see the sidebar adapt responsively.</p>
+  </div>
+</body>
+</html>

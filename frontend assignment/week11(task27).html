@@ -1,0 +1,29 @@
+import React from "react";
+
+// Variables
+const userName = "Shobhit";
+const timeOfDay = new Date().getHours();
+
+// Function to decide greeting
+function getGreeting(name) {
+  if (timeOfDay < 12) {
+    return `Good Morning, ${name}! 🌞`;
+  } else if (timeOfDay < 18) {
+    return `Good Afternoon, ${name}! 🌤️`;
+  } else {
+    return `Good Evening, ${name}! 🌙`;
+  }
+}
+
+function App() {
+  // JSX expressions with variables and functions
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      <h1>{getGreeting(userName)}</h1>
+      <p>It’s currently {timeOfDay} o’clock.</p>
+      <p>Welcome to learning JSX & Babel 🚀</p>
+    </div>
+  );
+}
+
+export default App;

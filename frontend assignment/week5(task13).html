@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eligibility Checker</title>
+</head>
+<body>
+  <script>
+  
+    var age = prompt("Enter your age:");
+
+   
+    age = Number(age);
+
+   
+    if (age >= 18) {
+      alert("You are eligible! 🎉");
+      document.write("<h2>You are eligible to vote or apply.</h2>");
+    } else {
+      alert("Sorry, you are not eligible yet.");
+      document.write("<h2>You are not eligible. Please wait until you are 18.</h2>");
+    }
+
+   
+    var message = (age >= 18) 
+      ? "✅ Eligible " 
+      : "❌ Not Eligible";
+
+    document.write("<p>" + message + "</p>");
+  </script>
+</body>
+</html>

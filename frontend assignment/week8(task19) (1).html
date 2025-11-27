@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ Section</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #111827;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #d1d5db;
+      padding-bottom: 10px;
+    }
+
+    .faq-question {
+      cursor: pointer;
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .faq-answer {
+      display: none; 
+      margin-top: 8px;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <h1>Frequently Asked Questions</h1>
+
+  <div class="faq-item">
+    <div class="faq-question">1. What is jQuery?</div>
+    <div class="faq-answer">jQuery is a fast, small, and feature-rich JavaScript library for DOM manipulation and effects.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">2. How does .slideToggle() work?</div>
+    <div class="faq-answer">It smoothly shows or hides an element by sliding it up or down.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">3. Why use jQuery for UI effects?</div>
+    <div class="faq-answer">It simplifies code and provides cross-browser compatibility for animations and DOM handling.</div>
+  </div>
+
+  <script>
+   
+    $(document).ready(function() {
+      $(".faq-question").on("click", function() {
+        $(this).next(".faq-answer").slideToggle(400); 
+      });
+    });
+  </script>
+</body>
+</html>

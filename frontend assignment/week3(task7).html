@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Product Card</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .product-card {
+      width: 320px;
+      margin: 20px; 
+      padding: 20px; 
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1); 
+      background: #fff;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .product-card h3 {
+      margin: 12px 0 8px;
+      font-size: 22px;
+      color: #111827;
+    }
+
+    .product-card p {
+      font-size: 15px;
+      color: #4b5563;
+      margin-bottom: 16px;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #10b981;
+      margin-bottom: 16px;
+    }
+
+    .product-card button {
+      padding: 12px 20px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .product-card button:hover {
+      background: #2563eb;
+    }
+
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+      .product-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="product-card">
+    <img src="https://via.placeholder.com/320x200" alt="Smartphone">
+    <h3>Smartphone Pro X</h3>
+    <p>Experience lightning-fast performance with sleek design and advanced camera features.</p>
+    <div class="price">₹49,999</div>
+    <button>Buy Now</button>
+  </div>
+</body>
+</html>

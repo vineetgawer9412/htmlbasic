@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>University Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #111827;
+    }
+
+    #countryInput {
+      padding: 10px;
+      width: 250px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+    }
+
+    #searchBtn {
+      padding: 10px 16px;
+      margin-left: 8px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #searchBtn:hover {
+      background: #2563eb;
+    }
+
+    #results {
+      margin-top: 30px;
+      text-align: left;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .university {
+      background: #fff;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .university h3 {
+      margin: 0;
+      color: #111827;
+    }
+
+    .university a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    .university a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>University Finder</h1>
+  <input type="text" id="countryInput" placeholder="Enter country name">
+  <button id="searchBtn">Search</button>
+
+  <div id="results"></div>
+
+  <script>
+    const searchBtn = document.getElementById("searchBtn");
+    const countryInput = document.getElementById("countryInput");
+    const resultsDiv = document.getElementById("results");
+
+    searchBtn.addEventListener("click", () => {
+      const country = countryInput.value.trim();
+      if (country === "") {
+        resultsDiv.innerHTML = "<p>Please enter a country name.</p>";
+        return;
+      }
+
+      resultsDiv.innerHTML = "<p>Loading universities...</p>";
+
+      fetch(`http://universities.hipolabs.com/search?country=${country}`)
+        .then(response => response.json())
+        .then(data => {
+          resultsDiv.innerHTML = ""; 
+          if (data.length === 0) {
+            resultsDiv.innerHTML = "<p>No universities found.</p>";
+            return;
+          }
+
+          data.forEach(university => {
+            const uniDiv = document.createElement("div");
+            uniDiv.className = "university";
+
+            uniDiv.innerHTML = `
+              <h3>${university.name}</h3>
+              <p><strong>State/Province:</strong> ${university["state-province"] || "N/A"}</p>
+              <p><a href="${university.web_pages[0]}" target="_blank">${university.web_pages[0]}</a></p>
+            `;
+
+            resultsDiv.appendChild(uniDiv);
+          });
+        })
+        .catch(error => {
+          resultsDiv.innerHTML = "<p>Error fetching data. Please try again.</p>";
+          console.error(error);
+        });
+    });
+  </script>
+</body>
+</html>

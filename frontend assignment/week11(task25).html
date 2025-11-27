@@ -1,0 +1,19 @@
+import React from "react";
+
+function App() {
+  const startup = {
+    name: "MyStartup",
+    founder: "Shobhit",
+    mission: "Build interactive apps with modern UI",
+  };
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      <h1>{startup.name} Profile</h1>
+      <p><strong>Founder:</strong> {startup.founder}</p>
+      <p><strong>Mission:</strong> {startup.mission}</p>
+    </div>
+  );
+}
+
+export default App;

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Closure Example</title>
+</head>
+<body>
+  <div id="counter"></div>
+  <button onclick="increment()">Increment</button>
+
+  <script>
+    function createCounter() {
+      let count = 0; 
+
+      return function() {
+        count++;
+        document.getElementById("counter").innerHTML = "Count: " + count;
+      };
+    }
+
+  
+    var increment = createCounter();
+  </script>
+</body>
+</html>

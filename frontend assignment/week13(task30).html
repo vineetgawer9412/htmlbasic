@@ -1,0 +1,60 @@
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+// Page components
+function Home() {
+  return <h2>Welcome to the Home Page 🏠</h2>;
+}
+
+function About() {
+  return <h2>About Us: This is a small blogging app 📖</h2>;
+}
+
+function Blog() {
+  return (
+    <div>
+      <h2>Blog Page ✍️</h2>
+      <p>Here you’ll see blog posts in the future.</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div style={styles.navbar}>
+        <Link to="/" style={styles.link}>Home</Link>
+        <Link to="/about" style={styles.link}>About</Link>
+        <Link to="/blog" style={styles.link}>Blog</Link>
+      </div>
+
+      <div style={styles.page}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+const styles = {
+  navbar: {
+    display: "flex",
+    gap: "20px",
+    padding: "10px",
+    backgroundColor: "#3b82f6"
+  },
+  link: {
+    color: "#fff",
+    textDecoration: "none",
+    fontWeight: "bold"
+  },
+  page: {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif"
+  }
+};
+
+export default App;

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Manager</title>
+  <style>
+    :root {
+      --bg: #0f172a;       
+      --panel: #111827;    
+      --muted: #9ca3af;    
+      --text: #e5e7eb;     
+      --primary: #22c55e; 
+      --danger: #ef4444;   
+      --accent: #3b82f6; 
+      --warning: #f59e0b;  
+      --border: #1f2937;   
+      --shadow: 0 10px 25px rgba(0,0,0,0.35);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; background: radial-gradient(1200px circle at 10% 10%, #0b1227 0, #0f172a 60%, #0a0f1f 100%); }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text); display: grid; place-items: center; padding: 28px;
+    }
+
+    .app {
+      width: 100%; max-width: 980px; background: linear-gradient(180deg, #0f172a 0%, #0b1020 100%);
+      border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden;
+    }
+
+    header {
+      padding: 24px 24px 16px; border-bottom: 1px solid var(--border);
+      display: grid; gap: 10px;
+    }
+    .title-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    h1 { margin: 0; font-size: 22px; letter-spacing: 0.2px; }
+    .stats { font-size: 13px; color: var(--muted); }
+
+    .controls {
+      display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 10px;
+    }
+
+    .input, select, button {
+      background: #0b1222; color: var(--text); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 12px; font-size: 14px; outline: none;
+      transition: border-color .15s ease, transform .08s ease;
+    }
+    .input:focus, select:focus { border-color: var(--accent); }
+
+    button {
+      cursor: pointer; user-select: none;
+    }
+    button:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, #1f53c5 0, #1447b3 100%); border-color: #1d4ed8; }
+    .btn-danger { background: linear-gradient(180deg, #cc2a2a 0, #b51717 100%); border-color: #b91c1c; }
+    .btn-outline { background: transparent; border-color: var(--border); }
+
+    main { padding: 18px; }
+
+    .list {
+      display: grid; gap: 10px;
+    }
+
+    .item {
+      display: grid; grid-template-columns: 24px 1fr auto;
+      gap: 10px; align-items: center; background: #0c1425; border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px; transition: transform .08s ease, border-color .15s ease, background .15s ease;
+    }
+    .item:hover { transform: translateY(-1px); }
+    .item.completed { opacity: 0.85; background: #0a1320; }
+    .checkbox { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+    .content { display: grid; gap: 4px; }
+    .title { font-weight: 600; word-break: break-word; }
+    .meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+    .tag {
+      border: 1px solid #1f2a3a; background: #0b1528; color: #b6c8ff; padding: 2px 8px; border-radius: 999px; font-size: 11px;
+    }
+
+    .actions { display: flex; gap: 8px; }
+    .icon-btn {
+      background: transparent; border: 1px solid var(--border); color: var(--text); padding: 8px 10px; border-radius: 10px;
+    }
+    .icon-btn:hover { border-color: var(--accent); }
+
+    .hidden { display: none !important; }
+
+    
+    .edit-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 8px;
+    }
+
+    
+    footer {
+      padding: 14px 18px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <header>
+      <div class="title-row">
+        <h1>Task Manager</h1>
+        <div class="stats" id="stats">0 tasks • 0 completed</div>
+      </div>
+      <div class="controls">
+        <input id="newTitle" class="input" type="text" placeholder="Task title (e.g., Submit SQL assignment)"/>
+        <input id="newCategory" class="input" type="text" placeholder="Category (e.g., School, Work, Personal)"/>
+        <select id="newPriority" title="Priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button id="addBtn" class="btn-primary">Add</button>
+      </div>
+      <div class="controls" style="margin-top:8px;">
+        <input id="search" class="input" type="text" placeholder="Search tasks..."/>
+        <select id="filterStatus" title="Status">
+          <option value="all" selected>All</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+        </select>
+        <select id="filterPriority" title="Priority filter">
+          <option value="all" selected>All priorities</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <button id="clearCompleted" class="btn-outline">Clear completed</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="list" class="list" aria-live="polite"></div>
+    </main>
+
+    <footer>
+      <div>Local storage persistence enabled</div>
+      <div><button id="exportBtn" class="icon-btn">Export JSON</button><button id="importBtn" class="icon-btn">Import JSON</button></div>
+    </footer>
+  </div>
+
+  <script>
+   
+    const STORAGE_KEY = 'task_manager_v1';
+
+   
+    let tasks = loadTasks();
+
+    function loadTasks() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.warn('Failed to parse storage, starting fresh.', e);
+        return [];
+      }
+    }
+    function saveTasks() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    }
+
+    const $ = (sel, scope = document) => scope.querySelector(sel);
+    const $$ = (sel, scope = document) => Array.from(scope.querySelectorAll(sel));
+    const uid = () => crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+    const nowISO = () => new Date().toISOString();
+
+
+    const state = {
+      query: '',
+      status: 'all',         
+      priority: 'all',      
+    };
+
+    
+    const listEl = $('#list');
+    const statsEl = $('#stats');
+    const addBtn = $('#addBtn');
+    const newTitleEl = $('#newTitle');
+    const newCategoryEl = $('#newCategory');
+    const newPriorityEl = $('#newPriority');
+    const searchEl = $('#search');
+    const filterStatusEl = $('#filterStatus');
+    const filterPriorityEl = $('#filterPriority');
+    const clearCompletedBtn = $('#clearCompleted');
+    const exportBtn = $('#exportBtn');
+    const importBtn = $('#importBtn');
+
+  
+    function createTask({ title, category = '', priority = 'medium' }) {
+      const t = {
+        id: uid(),
+        title: title.trim(),
+        category: category.trim(),
+        priority,
+        completed: false,
+        createdAt: nowISO(),
+        updatedAt: nowISO(),
+      };
+      tasks.unshift(t); 
+      saveTasks();
+      render();
+    }
+
+    function updateTask(id, patch) {
+      const idx = tasks.findIndex(t => t.id === id);
+      if (idx === -1) return;
+      tasks[idx] = { ...tasks[idx], ...patch, updatedAt: nowISO() };
+      saveTasks();
+      render();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      render();
+    }
+
+    function clearCompleted() {
+      tasks = tasks.filter(t => !t.completed);
+      saveTasks();
+      render();
+    }
+
+   
+    function matchesFilters(t) {
+      const q = state.query.toLowerCase();
+      const inQuery = !q || t.title.toLowerCase().includes(q) || t.category.toLowerCase().includes(q);
+
+      const statusOk =
+        state.status === 'all' ||
+        (state.status === 'active' && !t.completed) ||
+        (state.status === 'completed' && t.completed);
+
+      const priorityOk = state.priority === 'all' || t.priority === state.priority;
+
+      return inQuery && statusOk && priorityOk;
+    }
+
+    function getVisibleTasks() {
+      return tasks.filter(matchesFilters);
+    }
+
+   
+    function renderStats() {
+      const total = tasks.length;
+      const completed = tasks.filter(t => t.completed).length;
+      statsEl.textContent = `${total} tasks • ${completed} completed`;
+    }
+
+    function render() {
+      renderStats();
+      const visible = getVisibleTasks();
+
+      if (visible.length === 0) {
+        listEl.innerHTML = `<div class="item">
+            <div></div>
+            <div class="content">
+              <div class="title">No tasks found</div>
+              <div class="meta">Try adding a task or adjusting filters.</div>
+            </div>
+            <div class="actions"></div>
+          </div>`;
+        return;
+      }
+
+      listEl.innerHTML = visible.map(t => itemTemplate(t)).join('');
+    }
+
+    function itemTemplate(t) {
+      const completedClass = t.completed ? 'completed' : '';
+      const tag = t.category ? `<span class="tag">${escapeHTML(t.category)}</span>` : '';
+      const priorityLabel = `Priority: ${t.priority}`;
+      return `
+        <div class="item ${completedClass}" data-id="${t.id}">
+          <input type="checkbox" class="checkbox" data-action="toggle" ${t.completed ? 'checked' : ''} aria-label="Toggle complete"/>
+          <div class="content">
+            <div class="title">${escapeHTML(t.title)}</div>
+            <div class="meta">
+              <span>${priorityLabel}</span>
+              ${tag}
+              <span>Updated: ${new Date(t.updatedAt).toLocaleString()}</span>
+            </div>
+            <div class="edit-row hidden">
+              <input type="text" class="input edit-title" placeholder="Edit title" value="${escapeAttr(t.title)}"/>
+              <input type="text" class="input edit-category" placeholder="Edit category" value="${escapeAttr(t.category)}"/>
+              <select class="input edit-priority">
+                ${['low','medium','high'].map(p => `<option value="${p}" ${p===t.priority?'selected':''}>${p}</option>`).join('')}
+              </select>
+              <button class="icon-btn" data-action="saveEdit">Save</button>
+              <button class="icon-btn" data-action="cancelEdit">Cancel</button>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="icon-btn" data-action="edit">Edit</button>
+            <button class="icon-btn" data-action="delete">Delete</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      })[s]);
+    }
+    function escapeAttr(str) { return escapeHTML(str).replace(/"/g, '&quot;'); }
+
+    
+    addBtn.addEventListener('click', () => {
+      const title = newTitleEl.value.trim();
+      if (!title) { newTitleEl.focus(); return; }
+      const category = newCategoryEl.value.trim();
+      const priority = newPriorityEl.value;
+      createTask({ title, category, priority });
+      newTitleEl.value = ''; newCategoryEl.value = ''; newPriorityEl.value = 'medium';
+      newTitleEl.focus();
+    });
+
+    
+    [newTitleEl, newCategoryEl].forEach(el => {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter') addBtn.click();
+      });
+    });
+
+   
+    listEl.addEventListener('click', (e) => {
+      const actionBtn = e.target.closest('[data-action]');
+      if (!actionBtn) return;
+
+      const action = actionBtn.dataset.action;
+      const item = e.target.closest('.item');
+      if (!item) return;
+      const id = item.dataset.id;
+
+      if (action === 'toggle') {
+        const t = tasks.find(t => t.id === id);
+        updateTask(id, { completed: !t.completed });
+        return;
+      }
+
+      if (action === 'edit') {
+        const editRow = item.querySelector('.edit-row');
+        editRow.classList.toggle('hidden');
+        return;
+      }
+
+      if (action === 'delete') {
+        deleteTask(id);
+        return;
+      }
+
+      if (action === 'saveEdit') {
+        const titleEl = item.querySelector('.edit-title');
+        const categoryEl = item.querySelector('.edit-category');
+        const priorityEl = item.querySelector('.edit-priority');
+        const title = titleEl.value.trim();
+        if (!title) { titleEl.focus(); return; }
+        updateTask(id, {
+          title,
+          category: categoryEl.value.trim(),
+          priority: priorityEl.value
+        });
+        return;
+      }
+
+      if (action === 'cancelEdit') {
+        const editRow = item.querySelector('.edit-row');
+        editRow.classList.add('hidden');
+        return;
+      }
+    });
+
+    
+    listEl.addEventListener('change', (e) => {
+      const input = e.target.closest('.checkbox');
+      if (!input) return;
+      const item = e.target.closest('.item');
+      const id = item?.dataset.id;
+      if (!id) return;
+      updateTask(id, { completed: input.checked });
+    });
+
+  
+    filterStatusEl.addEventListener('change', () => { state.status = filterStatusEl.value; render(); });
+    filterPriorityEl.addEventListener('change', () => { state.priority = filterPriorityEl.value; render(); });
+
+    let searchTimer = null;
+    searchEl.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        state.query = searchEl.value.trim();
+        render();
+      }, 180);
+    });
+
+  
+    clearCompletedBtn.addEventListener('click', () => {
+      if (!tasks.some(t => t.completed)) return;
+      clearCompleted();
+    });
+
+  
+    exportBtn.addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify(tasks, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'tasks.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    importBtn.addEventListener('click', async () => {
+      const input = document.createElement('input');
+      input.type = 'file'; input.accept = 'application/json';
+      input.onchange = async () => {
+        const file = input.files?.[0];
+        if (!file) return;
+        try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          if (!Array.isArray(data)) throw new Error('Invalid JSON format.');
+         
+          const byId = new Map(tasks.map(t => [t.id, t]));
+          data.forEach(t => byId.set(t.id || uid(), { ...t, id: t.id || uid() }));
+          tasks = Array.from(byId.values());
+          saveTasks(); render();
+        } catch (err) {
+          alert('Import failed: ' + err.message);
+        }
+      };
+      input.click();
+    });
+
+    render();
+  </script>
+</body>
+</html>

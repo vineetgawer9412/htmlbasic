@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form with Fade Animation</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #loginForm {
+      display: none; 
+      max-width: 300px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin-top: 10px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interactive Login Form</h1>
+  <button id="showBtn">Show Login</button>
+  <button id="hideBtn">Hide Login</button>
+
+ 
+  <div id="loginForm">
+    <h2>Login</h2>
+    <input type="text" placeholder="Username">
+    <input type="password" placeholder="Password">
+    <button type="submit">Login</button>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+     
+      $("#showBtn").on("click", function() {
+        $("#loginForm").fadeIn(600); 
+      });
+
+      
+      $("#hideBtn").on("click", function() {
+        $("#loginForm").fadeOut(600);
+      });
+    });
+  </script>
+</body>
+</html>

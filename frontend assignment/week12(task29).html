@@ -1,0 +1,104 @@
+import React, { useState } from "react";
+
+function App() {
+  // State for form inputs
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+
+  // State for submitted data
+  const [submittedData, setSubmittedData] = useState(null);
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedData(formData);
+    setFormData({ name: "", email: "", message: "" }); // clear form
+  };
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
+      <h1>Contact Form</h1>
+      <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter your name"
+          value={formData.name}
+          onChange={handleChange}
+          style={styles.input}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={handleChange}
+          style={styles.input}
+        />
+        <textarea
+          name="message"
+          placeholder="Enter your message"
+          value={formData.message}
+          onChange={handleChange}
+          style={styles.textarea}
+        />
+        <button type="submit" style={styles.button}>Submit</button>
+      </form>
+
+      {submittedData && (
+        <div style={styles.output}>
+          <h2>Submitted Data:</h2>
+          <p><strong>Name:</strong> {submittedData.name}</p>
+          <p><strong>Email:</strong> {submittedData.email}</p>
+          <p><strong>Message:</strong> {submittedData.message}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const styles = {
+  input: {
+    width: "100%",
+    padding: "10px",
+    margin: "8px 0",
+    border: "1px solid #d1d5db",
+    borderRadius: "6px"
+  },
+  textarea: {
+    width: "100%",
+    padding: "10px",
+    margin: "8px 0",
+    border: "1px solid #d1d5db",
+    borderRadius: "6px",
+    minHeight: "80px"
+  },
+  button: {
+    padding: "10px 16px",
+    background: "#3b82f6",
+    color: "#fff",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer"
+  },
+  output: {
+    marginTop: "20px",
+    padding: "12px",
+    background: "#f3f4f6",
+    borderRadius: "6px"
+  }
+};
+
+export default App;

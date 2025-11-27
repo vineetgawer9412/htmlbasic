@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery with Event Delegation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #main-image {
+      width: 400px;
+      height: 250px;
+      border: 3px solid #3b82f6;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    #thumbnails {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    #thumbnails img {
+      width: 80px;
+      height: 60px;
+      border: 2px solid #d1d5db;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    #thumbnails img:hover {
+      transform: scale(1.1);
+      border-color: #3b82f6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Interactive Gallery</h1>
+
+<img id="main-image" src="https://www.publicdomainpictures.net/en/view-image.php?image=179875&picture=astronaut-in-space" alt="Astronaut">
+
+
+ 
+<div id="thumbnails">
+  <img src="https://www.pexels.com/search/rocket/" alt="Rocket">
+  <img src="https://wallpaperaccess.com/space-galaxy" alt="Galaxy">
+  <img src="https://wallpapercave.com/spiral-galaxy-abstract-4k-wallpapers" alt="Galaxy 2">
+</div>
+
+
+  <script>
+   
+    const thumbnails = document.getElementById("thumbnails");
+    const mainImage = document.getElementById("main-image");
+
+    thumbnails.addEventListener("click", function(event) {
+      if (event.target.tagName === "IMG") {
+       
+        mainImage.src = event.target.src;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Styling with jQuery</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .box {
+      width: 150px;
+      height: 150px;
+      background: #d1d5db;
+      margin: 20px auto;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    button {
+      padding: 10px 16px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dynamic Styling Demo</h1>
+  <div class="box"></div>
+  <button id="style-btn">Change Style</button>
+
+  <script>
+    $(document).ready(function() {
+      $("#style-btn").on("click", function() {
+        $(".box").css({
+          "background-color": "#f87171",  
+          "width": "200px",             
+          "height": "200px",            
+          "border-radius": "50%",        
+          "box-shadow": "0 4px 10px rgba(0,0,0,0.3)" 
+        });
+      });
+    });
+  </script>
+</body>
+</html>

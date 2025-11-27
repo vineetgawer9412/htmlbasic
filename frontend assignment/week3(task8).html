@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Responsive Blog Layout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9fafb;
+    }
+
+    header {
+      background: #1f2937;
+      color: #f9fafb;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .blog-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .blog-post {
+      flex: 1;
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .blog-post h2 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    .blog-post p {
+      color: #374151;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    footer {
+      background: #1f2937;
+      color: #f9fafb;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    
+    @media (max-width: 768px) {
+      .blog-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Blog</h1>
+    <p>Sharing thoughts, ideas, and tutorials</p>
+  </header>
+
+  <main class="blog-container">
+    <article class="blog-post">
+      <h2>Post One</h2>
+      <p>Web development is constantly evolving, and learning modern tools helps developers stay ahead. 
+         In this post, we explore how Flexbox makes layouts easier and more responsive.</p>
+    </article>
+    <article class="blog-post">
+      <h2>Post Two</h2>
+      <p>Building interactive applications requires a solid understanding of JavaScript. 
+         Here, we discuss event handling, DOM manipulation, and how to create smooth user experiences.</p>
+    </article>
+    <article class="blog-post">
+      <h2>Post Three</h2>
+      <p>Responsive design ensures that websites look great on all devices. 
+         This article covers media queries, fluid layouts, and best practices for mobile-first design.</p>
+    </article>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Blog. All rights reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Array Methods Practice</title>
+</head>
+<body>
+  <script>
+   
+    var numbers = [5, 12, 8, 20, 3];
+
+   
+    document.write("<h3>Using forEach:</h3>");
+    numbers.forEach(function(num) {
+      document.write(num + " ");
+    });
+
+  
+    var doubled = numbers.map(function(num) {
+      return num * 2;
+    });
+    document.write("<h3>Using map (doubled numbers):</h3>" + doubled.join(", "));
+
+   
+    var greaterThanTen = numbers.filter(function(num) {
+      return num > 10;
+    });
+    document.write("<h3>Using filter (numbers > 10):</h3>" + greaterThanTen.join(", "));
+
+   
+    var sum = numbers.reduce(function(acc, num) {
+      return acc + num;
+    }, 0);
+    document.write("<h3>Using reduce (sum of numbers):</h3>" + sum);
+  </script>
+</body>
+</html>
